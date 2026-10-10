@@ -5,12 +5,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
-import { bn, getJSON } from "@/lib/api";
+import { getJSON, getProducts } from "@/lib/api";
 export default function Navbar() {
   const path = usePathname(), router = useRouter();
   const { data } = authClient.useSession();
   const [cats, setCats] = useState([]);
-  useEffect(() => { getJSON("/categories").then((c) => setCats(Array.isArray(c) ? c : [])).catch(() => {}); }, []);
+  useEffect(() => { getJSON("/categories").then((c) => { if (Array.isArray(c) && c.length) return setCats(c); throw 0; }).catch(() => getProducts().then((l) => { const m = new Map(); l.forEach((x) => m.set(x.category, { slug: x.category, nameBn: x.categoryNameBn, icon: x.categoryIcon })); setCats([...m.values()]); }).catch(() => {})); }, []);
   const date = new Date().toLocaleDateString("bn-BD", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   const out = async () => { await authClient.signOut(); toast.success("সাইন আউট হয়েছে"); router.push("/"); };
   return (

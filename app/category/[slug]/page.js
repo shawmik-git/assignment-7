@@ -12,7 +12,7 @@ export default function Category() {
   const s = l && [...l].sort((a, b) => sort === "a" ? a.price - b.price : sort === "z" ? b.price - a.price : 0);
   return <div className="py-8">
     <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
-      <h1 className="text-3xl font-bold">{cat?.icon || cat?.emoji} {cat?.name || cat?.nameBn || slug}</h1>
+      <h1 className="text-3xl font-bold">{cat?.icon || cat?.emoji || l?.[0]?.categoryIcon} {cat?.name || cat?.nameBn || l?.[0]?.categoryNameBn || slug}</h1>
       <label className="flex items-center gap-2">সাজান:
         <select className="select select-bordered select-sm" value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value="d">ডিফল্ট</option><option value="a">দাম: কম থেকে বেশি</option><option value="z">দাম: বেশি থেকে কম</option></select></label></div>
